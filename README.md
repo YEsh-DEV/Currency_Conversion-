@@ -68,6 +68,7 @@ currency_conversion/
 | Gemini *(Planned)*    | LLM Integration           |
 
 ---
+
 ## ⚙️ Installation
 
 ### 1. Clone the Repository
@@ -136,4 +137,183 @@ http://localhost:8001
 
 ---
 
+## 📖 API Documentation
 
+FastAPI automatically generates interactive API documentation.
+
+### Swagger UI
+
+```text
+http://localhost:8001/docs
+```
+
+### ReDoc
+
+```text
+http://localhost:8001/redoc
+```
+
+---
+
+## 🔗 API Endpoints
+
+### Health Check
+
+```http
+GET /health
+```
+
+Response:
+
+```json
+{
+  "status": "healthy"
+}
+```
+
+---
+
+### Currency Conversion
+
+```http
+POST /convert
+```
+
+Request Example:
+
+```json
+{
+  "amount": 100,
+  "from_currency": "USD",
+  "to_currency": "EUR"
+}
+```
+
+Example Response:
+
+```json
+{
+  "amount": 100,
+  "from_currency": "USD",
+  "to_currency": "EUR",
+  "converted_amount": 92.45,
+  "exchange_rate": 0.9245
+}
+```
+
+> Actual response structure may vary based on implementation in `schemas.py`.
+
+---
+
+## 🧪 Running Tests
+
+Run all tests:
+
+```bash
+pytest
+```
+
+Run with detailed output:
+
+```bash
+pytest -v
+```
+
+Run a specific test file:
+
+```bash
+pytest tests/test_converter.py
+```
+
+---
+
+## 🐳 Docker Support
+
+### Build Docker Image
+
+```bash
+docker build -t currency-conv:dev .
+```
+
+### Run Container
+
+```bash
+docker run --rm -p 8001:8000 --env-file .env currency-conv:dev
+```
+
+### Using Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## 🔄 Development Workflow
+
+```bash
+git pull origin main
+
+# Make changes
+
+git add .
+git commit -m "Describe your changes"
+git push origin main
+```
+
+---
+
+## 🏗 Architecture Overview
+
+```text
+Client
+   │
+   ▼
+FastAPI Application
+   │
+   ├── Request Validation (Pydantic)
+   ├── Currency Conversion Logic
+   ├── Exchange Rate Provider
+   ├── Cache Layer
+   └── Future AI Agent Layer
+```
+
+---
+
+## 🔮 Future Enhancements
+
+* Live exchange-rate provider integration
+* LangChain agent support
+* Gemini API integration
+* Historical exchange rate analysis
+* Currency trend forecasting
+* Authentication & authorization
+* Rate limiting
+* Monitoring & observability
+* CI/CD pipeline deployment
+
+---
+
+## 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push the branch
+5. Open a Pull Request
+
+---
+
+## 📜 License
+
+This project is available under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+Developed by **YEsh-DEV**
+
+If you find this project useful, consider giving it a ⭐ on GitHub.
