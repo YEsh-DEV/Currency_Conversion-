@@ -68,3 +68,72 @@ currency_conversion/
 | Gemini *(Planned)*    | LLM Integration           |
 
 ---
+## ⚙️ Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YEsh-DEV/Currency_Conversion-.git
+cd Currency_Conversion-
+```
+
+### 2. Create Virtual Environment
+
+#### Windows PowerShell
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+#### Linux / macOS
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 🔐 Environment Configuration
+
+Create a `.env` file from the provided template:
+
+```bash
+cp .env.example .env
+```
+
+Fill in the required values:
+
+```env
+API_KEY=your_api_key_here
+EXCHANGE_RATE_PROVIDER=provider_name
+```
+
+> Never commit real API keys or secrets to GitHub.
+
+---
+
+## ▶️ Running the Application
+
+Start the FastAPI server:
+
+```bash
+uvicorn backend.app:app --reload --port 8001
+```
+
+The API will be available at:
+
+```text
+http://localhost:8001
+```
+
+---
+
+
