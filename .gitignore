@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+
+# Virtual env
+.venv/
+venv/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDEs
+.vscode/
+.idea/
+
+# Docker
+*.log
+.docker-compose.yml
+.Dockerfile
+# Tests 
+.test_agent_flow.py
+.test_converter.py
+.test_parser.py
+.mocks/
+.mock_llm.py

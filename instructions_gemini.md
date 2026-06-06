@@ -1,0 +1,79 @@
+📄 INSTRUCTIONS.md: Agentic Currency Converter Project GuideThis document outlines the architecture, setup, and steps required to build the Agentic Currency Converter application using FastAPI, Gemini LLM, and LangChain.1. 📂 Project StructureThis is the recommended file structure for your backend (FastAPI/Agent) to maintain professionalism and organization.currency-converter-agent/
+├── backend/
+│   ├── main.py             # FastAPI entry point, defines the /convert endpoint
+│   ├── agent.py            # Contains the LangGraph/LangChain logic and agent definition
+│   ├── tools.py            # Contains the Pydantic model and the currency conversion function (the Tool)
+│   ├── Dockerfile          # Defines the container environment
+│   ├── requirements.txt    # Lists all Python dependencies
+│   └── .env                # Stores all API keys (must be kept secret!)
+├── frontend/               # Your Vibe Code (e.g., React/Next.js) goes here
+└── INSTRUCTIONS.md         # This file
+2. 🔑 Prerequisites and KeysBefore starting, you must have the following keys set as environment variables (in your .env file):Key NamePurposeSourceGOOGLE_API_KEYAccess the Gemini LLM via LangChain.Google AI StudioCURRENCY_API_KEYFetch real-time exchange rates.ExchangeRate-API or similarLANGSMITH_API_KEYOptional: For debugging and tracing the agent's thought process (Highly Recommended).LangSmith3. ⚙️ Backend Core DependenciesYour requirements.txt should contain at least:fastapi
+uvicorn[standard]
+pydantic
+langchain
+langchain-google-genai
+langgraph
+requests # For calling the external currency API
+python-dotenv # For loading the .env file
+4. 🧠 Core Logic: Tool Definition (tools.py)The LLM must know exactly what to extract. Use Pydantic to define the tool's inputs and to ensure the final output is reliable JSON.A. Define the Pydantic Schema (Input & Output)Input Schema: Tells the LLM exactly what arguments to pass to the function.Python# tools.py
+from pydantic import BaseModel, Field
+
+class CurrencyConversionInput(BaseModel):
+    """Input schema for the currency conversion tool."""
+    amount: float = Field(description="The numeric amount of money to convert.")
+    source_currency: str = Field(description="The three-letter ISO currency code (e.g., 'USD', 'EUR', 'JPY') to convert FROM.")
+    target_currency: str = Field(description="The three-letter ISO currency code (e.g., 'CAD', 'GBP', 'AUD') to convert TO.")
+
+class ConversionResult(BaseModel):
+    """Output schema for the final response to the user."""
+    initial_amount: float
+    source_currency: str
+    target_currency: str
+    converted_amount: float
+    explanation: str = Field(description="A natural language sentence explaining the result.")
+B. Define the Tool FunctionUse the @tool decorator to expose your rate-fetching function to the agent.Python# tools.py (continued)
+from langchain.tools import tool
+import requests
+import os
+
+@tool(args_schema=CurrencyConversionInput)
+def get_exchange_rate(amount: float, source_currency: str, target_currency: str) -> dict:
+    """
+    Fetches the current exchange rate and calculates the converted amount.
+    This tool MUST be used when the user asks for a currency conversion.
+    """
+    # Call the external API (e.g., ExchangeRate-API)
+    api_key = os.getenv("CURRENCY_API_KEY")
+    # Example API call structure (adjust URL based on your chosen API)
+    url = f"https://v6.exchangerate-api.com/v6/{api_key}/pair/{source_currency}/{target_currency}/{amount}"
+    response = requests.get(url)
+    data = response.json()
+
+    # Check for error and return a failure message if necessary
+    if data.get("result") != "success":
+        return {"error": "API failed to fetch rate.", "details": data.get("error-type")}
+
+    # Return the raw result data for the agent to use
+    return {
+        "rate": data["conversion_rate"],
+        "converted_amount": data["conversion_result"]
+    }
+5. 🤖 Agent Setup and Endpoint (agent.py and main.py)Agent Initialization (agent.py):Import ChatGoogleGenerativeAI and bind your get_exchange_rate tool to it.Define a system prompt that directs the LLM to use the tool and to infer ISO codes (e.g., "dollar" $\rightarrow$ USD, "yen" $\rightarrow$ JPY).Use the create_tool_calling_agent or a simple LangGraph workflow for a stateless agent (no memory yet).FastAPI Endpoint (main.py):Create a POST endpoint, e.g., /convert.The endpoint receives the user's text message.It invokes the LangChain/LangGraph agent with the user's message.It returns the final response from the agent.Hint: To enforce the ConversionResult structured output at the end, chain the final LLM step with .with_structured_output(schema=ConversionResult).6. ✅ Updated To-Do ListThis list is prioritized to complete the core functionality first.StatusTaskFile(s)Enhancement Focus[ ]Project Setup: Create folders and install dependencies.requirements.txtEngineering[ ]API Key Management: Populate and load the .env file..env, main.pyProfessionalism[ ]Pydantic Tool Definition: Define CurrencyConversionInput and ConversionResult schemas.tools.pyStructured Output[ ]Tool Function: Implement get_exchange_rate using requests and a real currency API.tools.pyAgent Tooling[ ]Agent Initialization: Initialize Gemini LLM and bind the tool.agent.pyLLM Orchestration[ ]LangGraph Agent: Build the basic Agent Executor (LLM $\rightarrow$ Decide $\rightarrow$ Tool $\rightarrow$ Final Answer).agent.pyAgentic Workflow[ ]FastAPI Endpoint: Create /convert endpoint and link it to the agent.main.pyAPI Development[ ]Containerization: Write the Dockerfile for the backend.DockerfileDocker/DevOps[ ]Tracing (Optional): Integrate LangSmith for debugging the agent's steps.agent.pyObservability[ ]Frontend: Implement the Vibe-Coded UI and connect it to the /convert endpoint.frontend/Full Stack
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Completly change the llm.py compltely reomve the concept of openai and there are so many changes need to be done for simplyfing that code also at last checkiing part is not nesssary 
+2. what is the use of cache.py 
+3. schemas.py there is a error in the date 
