@@ -1,28 +1,70 @@
-Currency Conversion (Backend)
+# 💱 Currency Conversion Backend
 
-This repository contains a scaffold for a currency-conversion backend using Python + FastAPI.
+A modern backend service for currency conversion built with **FastAPI**, **Python**, and a modular architecture designed for scalability and future AI-powered integrations.
 
-Quick start (PowerShell):
+The project provides REST APIs for currency conversion, health monitoring, and future support for intelligent currency-related workflows using Large Language Models (LLMs).
 
-```powershell
-# create virtual env and install
-python -m venv .venv; .\.venv\Scripts\Activate.ps1; pip install -r requirements.txt
-# set environment variables from .env or set them manually
-# recommended: copy .env.example -> .env and fill keys
-uvicorn backend.app:app --reload --port 8001
+---
+
+## 🚀 Features
+
+* FastAPI-powered REST API
+* Real-time currency conversion architecture
+* Modular and maintainable codebase
+* Environment-based configuration
+* Docker support
+* Automated testing support
+* Health monitoring endpoint
+* Ready for LangChain & Gemini integration
+* Scalable backend design
+
+---
+
+## 📂 Project Structure
+
+```text
+currency_conversion/
+│
+├── backend/
+│   ├── app.py
+│   ├── app_clean.py
+│   ├── agent.py
+│   ├── llm.py
+│   ├── schemas.py
+│   │
+│   ├── tools/
+│   │   └── get_rate.py
+│   │
+│   └── utils/
+│       └── cache.py
+│
+├── tests/
+│   ├── test_agent_flow.py
+│   ├── test_converter.py
+│   ├── test_parser.py
+│   └── mocks/
+│
+├── .github/
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── .env.example
+└── README.md
 ```
 
-Docker (dev):
+---
 
-```powershell
-docker build -t currency-conv:dev .
-docker run --rm -p 8001:8000 --env-file .env currency-conv:dev
-```
+## 🛠 Tech Stack
 
-API endpoints:
-- `GET /health` - simple health check
-- `POST /convert` - convert payload (see `backend/schemas.py`)
+| Technology            | Purpose                   |
+| --------------------- | ------------------------- |
+| Python                | Core Programming Language |
+| FastAPI               | REST API Framework        |
+| Pydantic              | Data Validation           |
+| Uvicorn               | ASGI Server               |
+| Docker                | Containerization          |
+| Pytest                | Testing                   |
+| LangChain *(Planned)* | AI Orchestration          |
+| Gemini *(Planned)*    | LLM Integration           |
 
-Notes:
-- The Agent currently is a deterministic stub. It will be replaced with a LangChain + Gemini integration.
-- Do not commit real API keys. Use `.env.example` as a template.
+---
