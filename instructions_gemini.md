@@ -59,21 +59,3 @@ def get_exchange_rate(amount: float, source_currency: str, target_currency: str)
         "rate": data["conversion_rate"],
         "converted_amount": data["conversion_result"]
     }
-5. 🤖 Agent Setup and Endpoint (agent.py and main.py)Agent Initialization (agent.py):Import ChatGoogleGenerativeAI and bind your get_exchange_rate tool to it.Define a system prompt that directs the LLM to use the tool and to infer ISO codes (e.g., "dollar" $\rightarrow$ USD, "yen" $\rightarrow$ JPY).Use the create_tool_calling_agent or a simple LangGraph workflow for a stateless agent (no memory yet).FastAPI Endpoint (main.py):Create a POST endpoint, e.g., /convert.The endpoint receives the user's text message.It invokes the LangChain/LangGraph agent with the user's message.It returns the final response from the agent.Hint: To enforce the ConversionResult structured output at the end, chain the final LLM step with .with_structured_output(schema=ConversionResult).6. ✅ Updated To-Do ListThis list is prioritized to complete the core functionality first.StatusTaskFile(s)Enhancement Focus[ ]Project Setup: Create folders and install dependencies.requirements.txtEngineering[ ]API Key Management: Populate and load the .env file..env, main.pyProfessionalism[ ]Pydantic Tool Definition: Define CurrencyConversionInput and ConversionResult schemas.tools.pyStructured Output[ ]Tool Function: Implement get_exchange_rate using requests and a real currency API.tools.pyAgent Tooling[ ]Agent Initialization: Initialize Gemini LLM and bind the tool.agent.pyLLM Orchestration[ ]LangGraph Agent: Build the basic Agent Executor (LLM $\rightarrow$ Decide $\rightarrow$ Tool $\rightarrow$ Final Answer).agent.pyAgentic Workflow[ ]FastAPI Endpoint: Create /convert endpoint and link it to the agent.main.pyAPI Development[ ]Containerization: Write the Dockerfile for the backend.DockerfileDocker/DevOps[ ]Tracing (Optional): Integrate LangSmith for debugging the agent's steps.agent.pyObservability[ ]Frontend: Implement the Vibe-Coded UI and connect it to the /convert endpoint.frontend/Full Stack
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1. Completly change the llm.py compltely reomve the concept of openai and there are so many changes need to be done for simplyfing that code also at last checkiing part is not nesssary 
-2. what is the use of cache.py 
-3. schemas.py there is a error in the date 
