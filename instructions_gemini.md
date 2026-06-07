@@ -32,30 +32,5 @@ class ConversionResult(BaseModel):
     target_currency: str
     converted_amount: float
     explanation: str = Field(description="A natural language sentence explaining the result.")
-B. Define the Tool FunctionUse the @tool decorator to expose your rate-fetching function to the agent.Python# tools.py (continued)
-from langchain.tools import tool
-import requests
-import os
 
-@tool(args_schema=CurrencyConversionInput)
-def get_exchange_rate(amount: float, source_currency: str, target_currency: str) -> dict:
-    """
-    Fetches the current exchange rate and calculates the converted amount.
-    This tool MUST be used when the user asks for a currency conversion.
-    """
-    # Call the external API (e.g., ExchangeRate-API)
-    api_key = os.getenv("CURRENCY_API_KEY")
-    # Example API call structure (adjust URL based on your chosen API)
-    url = f"https://v6.exchangerate-api.com/v6/{api_key}/pair/{source_currency}/{target_currency}/{amount}"
-    response = requests.get(url)
-    data = response.json()
-
-    # Check for error and return a failure message if necessary
-    if data.get("result") != "success":
-        return {"error": "API failed to fetch rate.", "details": data.get("error-type")}
-
-    # Return the raw result data for the agent to use
-    return {
-        "rate": data["conversion_rate"],
-        "converted_amount": data["conversion_result"]
     }
