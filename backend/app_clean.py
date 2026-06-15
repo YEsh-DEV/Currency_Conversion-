@@ -67,9 +67,6 @@ async def convert(req: ConvertRequest):
     }
     ```
     
-    Returns:
-        ConvertResponse with converted amount, formula, and rate info
-    
     Raises:
         HTTPException: 400 for validation errors, 500 for server errors
     """
