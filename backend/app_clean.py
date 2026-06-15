@@ -136,18 +136,3 @@ async def get_supported_currencies():
     }
 
 
-@app.get("/")
-async def root():
-    """
-    Root endpoint with API information.
-    """
-    return {
-        "service": "Currency Conversion API",
-        "version": "1.0.0",
-        "endpoints": {
-            "health": "/health",
-            "convert": "/convert (POST)",
-            "currencies": "/currencies",
-            "docs": "/docs"
-        }
-    }
